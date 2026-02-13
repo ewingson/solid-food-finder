@@ -53,7 +53,7 @@ async function main() {
         // function to update UI
         updateUI(true, webid);
         
-        /*
+        // just test/experiment: this navigator block works only in firefox, chromium needs an API-key
         const successCallback = (position) => {
   		console.log(position);
 		};
@@ -61,7 +61,6 @@ async function main() {
   		console.log(error);
 		};
 		navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-		*/
 		
     } catch (error) {
         alert(error.message);
