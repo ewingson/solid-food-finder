@@ -10,6 +10,7 @@ const PRIV_TI_PREDICATE = "http://www.w3.org/ns/solid/terms#privateTypeIndex";
 const PIMSTORAGE_PREDICATE = "http://www.w3.org/ns/pim/space#storage";
 
 // --- SECTION 2: UI ELEMENT REFERENCES ---
+// --- I left vars from solid-info in the code, cause we need them anyway ---
 const loadingDiv = document.getElementById('loading');
 const guestDiv = document.getElementById('auth-guest');
 const userDiv = document.getElementById('auth-user');
@@ -98,7 +99,7 @@ async function readSolidDocument(url) {
 /**
  * Updates the user interface based on the login state.
  * @param {boolean} isLoggedIn - Whether the user is logged in.
- * @param {string} [name] - The user's name, if logged in.
+ * @param {string} [webidname] - The user's webid, if logged in.
  */
 function updateUI(isLoggedIn, webidname) {
     loadingDiv.setAttribute('hidden', ''); // Hide loading message
@@ -133,7 +134,7 @@ logoutButton.onclick = async () => {
     updateUI(false); // Reset to guest view.
 };
 
-// fallback function
+// fallback function (not yet used)
 async function findUserStorage(url) {
     url = url.replace(/#.*$/, '');
     url = url.endsWith('/') ? url + '../' : url + '/../';
