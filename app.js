@@ -2,6 +2,7 @@
 // --- SECTION 1: CONFIGURATION ---
 // oidc issuer will be prompted
 let SOLID_OIDC_ISSUER = "";
+// predicates
 const FOAF_NAME_PREDICATE = "http://xmlns.com/foaf/0.1/name";
 const VC_FN_PREDICATE = "http://www.w3.org/2006/vcard/ns#fn";
 const PREF_PREDICATE = "http://www.w3.org/ns/pim/space#preferencesFile";
