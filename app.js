@@ -52,7 +52,17 @@ async function main() {
         console.log(webid);
         // function to update UI
         updateUI(true, webid);
-
+        
+        /*
+        const successCallback = (position) => {
+  		console.log(position);
+		};
+		const errorCallback = (error) => {
+  		console.log(error);
+		};
+		navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+		*/
+		
     } catch (error) {
         alert(error.message);
         updateUI(false); // If an error occurs, show the guest view.
