@@ -1,4 +1,4 @@
-// base code Noel and Gemini -->
+// for Luke and comidas.gratis Solid Food Finder Application -->
 // --- SECTION 1: CONFIGURATION ---
 // oidc issuer will be prompted
 let SOLID_OIDC_ISSUER = "";
@@ -43,18 +43,13 @@ async function main() {
             return;
         }
 
-        // If logged in, fetch the user's info and update the UI.
-        const user = await fetchUserProfile(session.info.webId);
+        // If logged in, fetch the user's info (webid) and update the UI.
+        
         const webid = session.info.webId;
-        const fname = await secondFetch(session.info.webId);
-        // show fn in console
-        console.log(fname);
-        const preferences = await preferencesFetch(session.info.webId);
-        const pubti = await pubIFetch(session.info.webId);
-        const privti = await privIFetch(session.info.webId);
-        const pims = await rootstorageFetch(session.info.webId);
-	// function to update UI
-        updateUI(true, user.name, webid, fname, preferences, pubti, privti, pims);
+        // show webid in console
+        console.log(webid);
+        // function to update UI
+        updateUI(true, webid);
 
     } catch (error) {
         alert(error.message);
@@ -82,72 +77,6 @@ function getLoginUrl() {
 }
 
 /**
- * Fetches the user's name from their Solid profile.
- * @param {string} webId - The WebID of the user.
- * @returns {Promise<object>} An object containing the user's name.
- */
-async function fetchUserProfile(webId) {
-    // This function uses the `readSolidDocument` helper below.
-    const profileQuads = await readSolidDocument(webId);
-
-    // Find the quad containing the foaf:name.
-    const nameQuad = profileQuads.find(quad => quad.predicate.value === FOAF_NAME_PREDICATE);
-
-    return {
-        name: nameQuad?.object.value || 'Anonymous'
-    };
-}
-
-async function secondFetch(webId) {
-    // This function uses the `readSolidDocument` helper below.
-    const profileQuads = await readSolidDocument(webId);
-
-	const fnQuad = profileQuads.find(quad => quad.predicate.value === VC_FN_PREDICATE);
-
-    // It returns the found vcard:fn value, or a default string if not found.
-    return fnQuad?.object.value || 'hmm, not set';
-}
-
-async function preferencesFetch(webId) {
-    // This function uses the `readSolidDocument` helper below.
-    const profileQuads = await readSolidDocument(webId);
-
-	const prefQuad = profileQuads.find(quad => quad.predicate.value === PREF_PREDICATE);
-
-    // It returns the found preferences value, or a default string if not found.
-    return prefQuad?.object.value || 'hmm, not found';
-}
-
-async function pubIFetch(webId) {
-    // This function uses the `readSolidDocument` helper below.
-    const profileQuads = await readSolidDocument(webId);
-
-	const pubiQuad = profileQuads.find(quad => quad.predicate.value === PUB_TI_PREDICATE);
-
-    // It returns the found publicTypeIndex value, or a default string if not found.
-    return pubiQuad?.object.value || 'hmm, not found';
-}
-
-async function privIFetch(webId) {
-    // This function uses the `readSolidDocument` helper below.
-    const profileQuads = await readSolidDocument(webId);
-
-	const priviQuad = profileQuads.find(quad => quad.predicate.value === PRIV_TI_PREDICATE);
-
-    // It returns the found privateTypeIndex value, or a default string if not found.
-    return priviQuad?.object.value || 'hmm, not found';
-}
-
-// find root storage location / equivalent to the fetches above
-async function rootstorageFetch(webId) {
-    const profileQuads = await readSolidDocument(webId);
-    
-    const storageQuad = profileQuads.find(quad => quad.predicate.value === PIMSTORAGE_PREDICATE);
-
-    return storageQuad?.object.value || await findUserStorage(webId);
-}
-
-/**
  * A low-level helper to fetch and parse a Solid document.
  * @param {string} url - The URL of the document to read.
  * @returns {Promise<Array>} An array of quads from the parsed document.
@@ -171,7 +100,7 @@ async function readSolidDocument(url) {
  * @param {boolean} isLoggedIn - Whether the user is logged in.
  * @param {string} [name] - The user's name, if logged in.
  */
-function updateUI(isLoggedIn, name, webidname, fName, preF, pubTI, privTI, pimS) {
+function updateUI(isLoggedIn, webidname) {
     loadingDiv.setAttribute('hidden', ''); // Hide loading message
 
     if (isLoggedIn) {
@@ -179,13 +108,8 @@ function updateUI(isLoggedIn, name, webidname, fName, preF, pubTI, privTI, pimS)
         guestDiv.setAttribute('hidden', '');
         userDiv.removeAttribute('hidden');
         // output
-        usernameSpan.textContent = name;
         webidSpan.textContent = webidname;
-        fnSpan.textContent = fName;
-        prefSpan.textContent = preF;
-        pubindexSpan.textContent = pubTI;
-        privindexSpan.textContent = privTI;
-        storageSpan.textContent = pimS;
+        
     } else {
         userDiv.setAttribute('hidden', '');
         guestDiv.removeAttribute('hidden');
@@ -198,7 +122,7 @@ loginButton.onclick = () => {
     solidClientAuthentication.login({
         oidcIssuer: SOLID_OIDC_ISSUER, // user will provide this value per prompt
         redirectUrl: window.location.href,
-        clientName: 'Solid Info App'
+        clientName: 'Solid Food Finder App'
     });
 };
 
