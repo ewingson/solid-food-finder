@@ -25,6 +25,7 @@ const pubindexSpan = document.getElementById('pubind');
 const privindexSpan = document.getElementById('privind');
 const latSpan = document.getElementById('lat');
 const lonSpan = document.getElementById('lon');
+const nowSpan = document.getElementById('nowdate');
 
 // --- SECTION 3: CORE SOLID LOGIC ---
 
@@ -39,7 +40,7 @@ async function main() {
 
         // Get the current session information.
         const session = solidClientAuthentication.getDefaultSession();
-
+		
         // If not logged in, show the guest view and stop.
         if (!session.info.isLoggedIn) {
             updateUI(false);
@@ -51,6 +52,19 @@ async function main() {
         const webid = session.info.webId;
         // show webid in console
         console.log(webid);
+        
+        console.log("clientAppId: " + session.info.clientAppId);
+        console.log("sessionId: " + session.info.sessionId);
+        console.log("expirationDate: " + session.info.expirationDate);
+        let timestamp = session.info.expirationDate;
+        let sessiondateraw = new Date(timestamp);
+        let nowdateraw = Date.now();
+        let sessiondate = getfTimestamp(sessiondateraw);
+        let nowdate = getfTimestamp(nowdateraw);
+        console.log("expires: " + sessiondate);
+        console.log("now: " + nowdate);
+        nowSpan.textContent = nowdate;
+        
         // function to update UI
         updateUI(true, webid);
         
@@ -71,6 +85,13 @@ async function main() {
         alert(error.message);
         updateUI(false); // If an error occurs, show the guest view.
     }
+}
+
+function getfTimestamp (udate) {
+  const pad = (n,s=2) => (`${new Array(s).fill(0)}${n}`).slice(-s);
+  const d = new Date(udate);
+  
+  return `${pad(d.getFullYear(),4)}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
 }
 
 function getLoginUrl() {
