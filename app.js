@@ -23,7 +23,8 @@ const fnSpan = document.getElementById('fn');
 const prefSpan = document.getElementById('pref');
 const pubindexSpan = document.getElementById('pubind');
 const privindexSpan = document.getElementById('privind');
-const storageSpan = document.getElementById('root');
+const latSpan = document.getElementById('lat');
+const lonSpan = document.getElementById('lon');
 
 // --- SECTION 3: CORE SOLID LOGIC ---
 
@@ -56,6 +57,10 @@ async function main() {
         // just test/experiment: this navigator block works only in firefox, chromium needs an API-key
         const successCallback = (position) => {
   		console.log(position);
+  		console.log(position.coords.latitude);
+  		console.log(position.coords.longitude);
+  		latSpan.textContent = position.coords.latitude;
+  		lonSpan.textContent = position.coords.longitude;
 		};
 		const errorCallback = (error) => {
   		console.log(error);
