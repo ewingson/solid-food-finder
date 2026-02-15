@@ -26,6 +26,7 @@ const privindexSpan = document.getElementById('privind');
 const latSpan = document.getElementById('lat');
 const lonSpan = document.getElementById('lon');
 const nowSpan = document.getElementById('nowdate');
+const infoSpan = document.getElementById('sinfo');
 
 // --- SECTION 3: CORE SOLID LOGIC ---
 
@@ -64,6 +65,9 @@ async function main() {
         console.log("expires: " + sessiondate);
         console.log("now: " + nowdate);
         nowSpan.textContent = nowdate;
+        let info = (JSON.stringify(session,null,4));
+        console.log(info);
+        infoSpan.textContent = info;
         
         // function to update UI
         updateUI(true, webid);
